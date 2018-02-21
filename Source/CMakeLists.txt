@@ -121,11 +121,7 @@ if (URHO3D_PHYSICS)
 endif ()
 
 if (NOT ANDROID AND NOT ARM AND NOT WEB)
-    if (URHO3D_OPENGL)
-        add_subdirectory (ThirdParty/GLEW)
-    elseif (NOT URHO3D_D3D11)
-        add_subdirectory (ThirdParty/MojoShader)
-    endif ()
+	add_subdirectory (ThirdParty/GLEW)
     if (NOT CMAKE_SYSTEM_NAME STREQUAL Linux)
         add_subdirectory (ThirdParty/LibCpuId)
     endif ()
@@ -133,11 +129,6 @@ endif ()
 
 # Urho3D game engine library
 add_subdirectory (Urho3D)
-
-# Urho3D Clang tools
-if (URHO3D_CLANG_TOOLS)
-    add_subdirectory (Clang-Tools)
-endif ()
 
 # Urho3D tools
 add_subdirectory (Tools)

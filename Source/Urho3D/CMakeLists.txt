@@ -32,7 +32,7 @@ if (MINGW AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9.1 AND NOT URHO3D_64BIT
 endif ()
 
 # Generate JSON compilation database format specification
-if (URHO3D_CLANG_TOOLS OR URHO3D_BINDINGS)
+if (URHO3D_BINDINGS)
     set (CMAKE_EXPORT_COMPILE_COMMANDS 1)
     # Clang assumes all their tools to be installed in a relative path to their libs but this is not the case for our own Clang-tools
     # Clang has a hard-coded way to search for their headers (see http://clang.llvm.org/docs/LibTooling.html#builtin-includes)
@@ -123,17 +123,6 @@ if (URHO3D_DATABASE)
     endif ()
 else ()
     list (APPEND EXCLUDED_SOURCE_DIRS Database)
-endif ()
-if (URHO3D_OPENGL)
-    # Exclude the opposite source directory
-    list (APPEND EXCLUDED_SOURCE_DIRS Graphics/Direct3D9 Graphics/Direct3D11)
-else ()
-    list (APPEND EXCLUDED_SOURCE_DIRS Graphics/OpenGL)
-    if (URHO3D_D3D11)
-        list (APPEND EXCLUDED_SOURCE_DIRS Graphics/Direct3D9)
-    else ()
-        list (APPEND EXCLUDED_SOURCE_DIRS Graphics/Direct3D11)
-    endif ()
 endif ()
 if (APPLE AND NOT ARM)
     set (GLOB_OBJC_PATTERN *.m)     # Should only pick up MacFileWatcher.m for macOS platform at the moment
@@ -246,9 +235,6 @@ endif ()
 # Generate platform specific export header file
 if (MSVC)
     set (PRE_EXPORT_HEADER "\n#pragma warning(disable: 4251)\n#pragma warning(disable: 4275)\n\n#if _MSC_VER < 1900\n#define strtoll _strtoi64\n#define strtoull _strtoui64\n#endif\n\n")
-endif ()
-if (URHO3D_CLANG_TOOLS)
-    set (ANNOTATE_NONSCRIPTABLE "__attribute__((annotate(\"nonscriptable\")))")
 endif ()
 generate_export_header (${TARGET_NAME} ${URHO3D_LIB_TYPE} EXPORT_MACRO_NAME URHO3D_API EXPORT_FILE_NAME Urho3D.h.new)
 execute_process (COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/Urho3D.h.new ${CMAKE_CURRENT_BINARY_DIR}/Urho3D.h)
