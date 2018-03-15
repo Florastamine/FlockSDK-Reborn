@@ -8,7 +8,7 @@ Flock SDK Reborn is an attempt to reboot [Flock SDK](https://github.com/Florasta
 * Write examples for fork-specific new features/changes, and also port various examples from the original engine for completeness and to provide a way of studying the engine API.
 * Implement basic game script encryption/decryption, with a private key provided by the user during the compilation process.
 * Tools which does compiling the release version of the engine/game, packaging assets, wrapping up game scripts, cleaning up, doing post-compilation steps (UPX compression, etc.).
-* Add several more functionalities: numerical integration, name generation, noise generation ((FastNoiseSIMD)[https://github.com/Auburns/FastNoiseSIMD]),...
+* Add several more functionalities: numerical integration, name generation, noise generation ([FastNoiseSIMD](https://github.com/Auburns/FastNoiseSIMD)),...
 * `std`-based containers (`std::string`, `std::vector<>`, to name a few) will have bigger influence, and will slowly replace the SDK's self-made containers.
 * Vietnamese translation for the scene editor.
 * Most of platform-dependent APIs are also available for Linux.
