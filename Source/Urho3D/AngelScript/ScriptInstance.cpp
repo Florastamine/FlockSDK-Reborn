@@ -31,7 +31,7 @@
 #include "../Core/Profiler.h"
 #include "../IO/Log.h"
 #include "../IO/MemoryBuffer.h"
-#if defined(URHO3D_PHYSICS)
+#if defined(URHO3D_PHYSICS) || defined(URHO3D_URHO2D)
 #include "../Physics/PhysicsEvents.h"
 #endif
 #include "../Resource/ResourceCache.h"
@@ -63,12 +63,8 @@ static const char* methodDeclarations[] = {
 };
 
 ScriptInstance::ScriptInstance(Context* context) :
-    Component(context),
-    scriptObject_(nullptr),
-    subscribed_(false),
-    subscribedPostFixed_(false)
+    Component(context)
 {
-    ClearScriptMethods();
     ClearScriptAttributes();
 }
 
@@ -541,7 +537,7 @@ void ScriptInstance::OnSceneSet(Scene* scene)
     {
         UnsubscribeFromEvent(E_SCENEUPDATE);
         UnsubscribeFromEvent(E_SCENEPOSTUPDATE);
-#if defined(URHO3D_PHYSICS)
+#if defined(URHO3D_PHYSICS) || defined(URHO3D_URHO2D)
         UnsubscribeFromEvent(E_PHYSICSPRESTEP);
         UnsubscribeFromEvent(E_PHYSICSPOSTSTEP);
 #endif
@@ -788,7 +784,7 @@ void ScriptInstance::UpdateEventSubscription()
             if (methods_[METHOD_POSTUPDATE])
                 SubscribeToEvent(scene, E_SCENEPOSTUPDATE, URHO3D_HANDLER(ScriptInstance, HandleScenePostUpdate));
 
-#if defined(URHO3D_PHYSICS)
+#if defined(URHO3D_PHYSICS) || defined(URHO3D_URHO2D)
             if (methods_[METHOD_FIXEDUPDATE] || methods_[METHOD_FIXEDPOSTUPDATE])
             {
                 Component* world = GetFixedUpdateSource();
@@ -822,7 +818,7 @@ void ScriptInstance::UpdateEventSubscription()
         {
             UnsubscribeFromEvent(scene, E_SCENEPOSTUPDATE);
 
-#if defined(URHO3D_PHYSICS)
+#if defined(URHO3D_PHYSICS) || defined(URHO3D_URHO2D)
             Component* world = GetFixedUpdateSource();
             if (world)
             {
@@ -898,7 +894,7 @@ void ScriptInstance::HandleScenePostUpdate(StringHash eventType, VariantMap& eve
     scriptFile_->Execute(scriptObject_, methods_[METHOD_POSTUPDATE], parameters);
 }
 
-#if defined(URHO3D_PHYSICS)
+#if defined(URHO3D_PHYSICS) || defined(URHO3D_URHO2D)
 
 void ScriptInstance::HandlePhysicsPreStep(StringHash eventType, VariantMap& eventData)
 {

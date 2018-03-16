@@ -32,7 +32,7 @@
 #include "../LuaScript/LuaScript.h"
 #include "../LuaScript/LuaScriptEventInvoker.h"
 #include "../LuaScript/LuaScriptInstance.h"
-#if defined(URHO3D_PHYSICS)
+#if defined(URHO3D_PHYSICS) || defined(URHO3D_URHO2D)
 #include "../Physics/PhysicsEvents.h"
 #endif
 #include "../Resource/ResourceCache.h"
@@ -65,16 +65,12 @@ static const char* scriptObjectMethodNames[] = {
 
 LuaScriptInstance::LuaScriptInstance(Context* context) :
     Component(context),
+    luaScript_(GetSubsystem<LuaScript>()),
+    eventInvoker_(new LuaScriptEventInvoker(this)),
     scriptObjectRef_(LUA_REFNIL)
 {
-    luaScript_ = GetSubsystem<LuaScript>();
     luaState_ = luaScript_->GetState();
     attributeInfos_ = *context_->GetAttributes(GetTypeStatic());
-
-    eventInvoker_ = new LuaScriptEventInvoker(this);
-
-    for (auto& scriptObjectMethod : scriptObjectMethods_)
-        scriptObjectMethod = nullptr;
 }
 
 LuaScriptInstance::~LuaScriptInstance()
@@ -629,7 +625,7 @@ void LuaScriptInstance::SubscribeToScriptMethodEvents()
     if (scene && scriptObjectMethods_[LSOM_POSTUPDATE])
         SubscribeToEvent(scene, E_SCENEPOSTUPDATE, URHO3D_HANDLER(LuaScriptInstance, HandlePostUpdate));
 
-#if defined(URHO3D_PHYSICS)
+#if defined(URHO3D_PHYSICS) || defined(URHO3D_URHO2D)
     Component* world = GetFixedUpdateSource();
 
     if (world && scriptObjectMethods_[LSOM_FIXEDUPDATE])
@@ -648,7 +644,7 @@ void LuaScriptInstance::UnsubscribeFromScriptMethodEvents()
     UnsubscribeFromEvent(E_SCENEUPDATE);
     UnsubscribeFromEvent(E_SCENEPOSTUPDATE);
 
-#if defined(URHO3D_PHYSICS)
+#if defined(URHO3D_PHYSICS) || defined(URHO3D_URHO2D)
     UnsubscribeFromEvent(E_PHYSICSPRESTEP);
     UnsubscribeFromEvent(E_PHYSICSPOSTSTEP);
 #endif
@@ -691,7 +687,7 @@ void LuaScriptInstance::HandlePostUpdate(StringHash eventType, VariantMap& event
     }
 }
 
-#if defined(URHO3D_PHYSICS)
+#if defined(URHO3D_PHYSICS) || defined(URHO3D_URHO2D)
 
 void LuaScriptInstance::HandleFixedUpdate(StringHash eventType, VariantMap& eventData)
 {

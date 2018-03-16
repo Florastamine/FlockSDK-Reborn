@@ -143,6 +143,7 @@ option (URHO3D_NAVIGATION "Enable navigation support" TRUE)
 # Urho's Network subsystem depends on kNet library which uses C++ exceptions feature
 cmake_dependent_option (URHO3D_NETWORK "Enable networking support" TRUE "NOT WEB AND EXCEPTIONS" FALSE)
 option (URHO3D_PHYSICS "Enable physics support" TRUE)
+option (URHO3D_URHO2D "Enable 2D graphics and physics support" TRUE)
 option (URHO3D_WEBP "Enable WebP support" TRUE)
 if (ARM AND NOT ANDROID AND NOT RPI AND NOT APPLE)
     set (ARM_ABI_FLAGS "" CACHE STRING "Specify ABI compiler flags (ARM on Linux platform only); e.g. Orange-Pi Mini 2 could use '-mcpu=cortex-a7 -mfpu=neon-vfpv4'")
@@ -394,7 +395,8 @@ if (URHO3D_CLANG_TOOLS)
             URHO3D_NAVIGATION
             URHO3D_NETWORK
             URHO3D_PHYSICS
-            URHO3D_PROFILING)
+            URHO3D_PROFILING
+            URHO3D_URHO2D)
         set (${OPT} 1)
     endforeach ()
     foreach (OPT URHO3D_TESTING URHO3D_LUAJIT URHO3D_DATABASE_ODBC)
@@ -445,6 +447,7 @@ foreach (OPT
         URHO3D_PHYSICS
         URHO3D_PROFILING
         URHO3D_THREADING
+        URHO3D_URHO2D
         URHO3D_WEBP
         URHO3D_WIN32_CONSOLE)
     if (${OPT})
@@ -549,12 +552,8 @@ if (MSVC)
     set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${DEBUG_RUNTIME}")
     set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELEASE} ${RELEASE_RUNTIME} /fp:fast /Zi /GS- /D _SECURE_SCL=0")
     set (CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
-    # Visual Studio 2012 onward enables the SSE2 by default, however, we set the flag to AVX so that we get the SSE3 support (required by SDL)
-    # We must set the flag to IA32 if user intention is to turn the SIMD off
-    if (URHO3D_SSE)
-        set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /arch:AVX")
-        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:AVX")
-    else ()
+    # Visual Studio 2012 onward enables the SSE2 by default, however, we must set the flag to IA32 if user intention is to turn the SIMD off
+    if (NOT URHO3D_SSE)
         set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /arch:IA32")
         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:IA32")
     endif ()
@@ -1097,7 +1096,7 @@ macro (define_resource_dirs)
     list (APPEND SOURCE_FILES ${RESOURCE_DIRS} ${RESOURCE_PAKS} ${RESOURCE_FILES})
 endmacro()
 
-# Macro fo adding a HTML shell-file when targeting Web platform
+# Macro for adding a HTML shell-file when targeting Web platform
 macro (add_html_shell)
     check_source_files ("Could not call add_html_shell() macro before define_source_files() macro.")
     if (EMSCRIPTEN)
@@ -1127,7 +1126,7 @@ macro (enable_pch HEADER_PATHNAME)
     # No op when PCH support is not enabled
     if (URHO3D_PCH)
         # Get the optional LANG parameter to indicate whether the header should be treated as C or C++ header, default to C++
-        if ("${ARGN}" STREQUAL C)   # Stringify as the LANG paramater could be empty
+        if ("${ARGN}" STREQUAL C) # Stringify as the LANG paramater could be empty
             set (EXT c)
             set (LANG C)
             set (LANG_H c-header)
