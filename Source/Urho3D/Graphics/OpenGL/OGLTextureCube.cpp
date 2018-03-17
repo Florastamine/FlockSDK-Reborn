@@ -485,7 +485,7 @@ bool TextureCube::Create()
         requestedLevels_ = 1;
     else if (usage_ == TEXTURE_RENDERTARGET)
     {
-#if defined(__EMSCRIPTEN__) || defined(IOS) || defined(TVOS)
+#if defined(__EMSCRIPTEN__) || defined(IOS)
         // glGenerateMipmap appears to not be working on WebGL or iOS/tvOS, disable rendertarget mipmaps for now
         requestedLevels_ = 1;
 #else

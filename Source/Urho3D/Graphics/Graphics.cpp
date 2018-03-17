@@ -213,7 +213,7 @@ PODVector<IntVector3> Graphics::GetResolutions(int monitor) const
 
 IntVector2 Graphics::GetDesktopResolution(int monitor) const
 {
-#if !defined(__ANDROID__) && !defined(IOS) && !defined(TVOS)
+#if !defined(__ANDROID__) && !defined(IOS)
     SDL_DisplayMode mode;
     SDL_GetDesktopDisplayMode(monitor, &mode);
     return IntVector2(mode.w, mode.h);

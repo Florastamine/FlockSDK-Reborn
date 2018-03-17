@@ -177,7 +177,7 @@ if (MSVC)
 else ()
     # The 'invalidate event' will be sent by toolchain file when it reconfigures the cross-compiler or compiler flags
     if (INVALIDATE_CCT OR NOT DEFINED NATIVE_PREDEFINED_MACROS)
-        if (IOS OR TVOS)
+        if (IOS)
             # Assume arm64 is the native arch (this does not prevent our build system to target armv7 later in universal binary build)
             set (ARCH_FLAGS -arch arm64)
         elseif (ANDROID AND CMAKE_CXX_COMPILER_ID MATCHES Clang)

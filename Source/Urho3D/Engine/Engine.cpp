@@ -94,7 +94,7 @@ Engine::Engine(Context* context) :
     timeStep_(0.0f),
     timeStepSmoothing_(2),
     minFps_(10),
-#if defined(IOS) || defined(TVOS) || defined(__ANDROID__) || defined(__arm__) || defined(__aarch64__)
+#if defined(IOS) || defined(__ANDROID__) || defined(__arm__) || defined(__aarch64__)
     maxFps_(60),
     maxInactiveFps_(10),
     pauseMinimized_(true),
@@ -575,7 +575,7 @@ void Engine::SetPauseMinimized(bool enable)
 void Engine::SetAutoExit(bool enable)
 {
     // On mobile platforms exit is mandatory if requested by the platform itself and should not be attempted to be disabled
-#if defined(__ANDROID__) || defined(IOS) || defined(TVOS)
+#if defined(__ANDROID__) || defined(IOS)
     enable = true;
 #endif
     autoExit_ = enable;
@@ -588,7 +588,7 @@ void Engine::SetNextTimeStep(float seconds)
 
 void Engine::Exit()
 {
-#if defined(IOS) || defined(TVOS)
+#if defined(IOS)
     // On iOS/tvOS it's not legal for the application to exit on its own, instead it will be minimized with the home key
 #else
     DoExit();
@@ -725,7 +725,7 @@ void Engine::ApplyFrameLimit()
 
 #ifndef __EMSCRIPTEN__
     // Perform waiting loop if maximum FPS set
-#if !defined(IOS) && !defined(TVOS)
+#if !defined(IOS)
     if (maxFps)
 #else
     // If on iOS/tvOS and target framerate is 60 or above, just let the animation callback handle frame timing

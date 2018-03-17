@@ -35,8 +35,6 @@
 
 #if defined(IOS)
 #include <mach/mach_host.h>
-#elif defined(TVOS)
-extern "C" unsigned SDL_TVOS_GetActiveProcessorCount();
 #elif !defined(__linux__) && !defined(__EMSCRIPTEN__)
 #include <LibCpuId/libcpuid.h>
 #endif
@@ -159,7 +157,7 @@ static void GetCPUData(struct CpuCoreCount* data)
     }
 }
 
-#elif !defined(__EMSCRIPTEN__) && !defined(TVOS)
+#elif !defined(__EMSCRIPTEN__)
 static void GetCPUData(struct cpu_id_t* data)
 {
     if (cpu_identify(nullptr, data) < 0)
@@ -216,7 +214,7 @@ void OpenConsoleWindow()
 
 void PrintUnicode(const String& str, bool error)
 {
-#if !defined(__ANDROID__) && !defined(IOS) && !defined(TVOS)
+#if !defined(__ANDROID__) && !defined(IOS)
 #ifdef _WIN32
     // If the output stream has been redirected, use fprintf instead of WriteConsoleW,
     // though it means that proper Unicode output will not work
@@ -250,7 +248,7 @@ void PrintLine(const String& str, bool error)
 
 void PrintLine(const char* str, bool error)
 {
-#if !defined(__ANDROID__) && !defined(IOS) && !defined(TVOS)
+#if !defined(__ANDROID__) && !defined(IOS)
     fprintf(error ? stderr : stdout, "%s\n", str);
 #endif
 }
@@ -388,7 +386,7 @@ String GetConsoleInput()
             }
         }
     }
-#elif !defined(__ANDROID__) && !defined(IOS) && !defined(TVOS)
+#elif !defined(__ANDROID__) && !defined(IOS)
     int flags = fcntl(STDIN_FILENO, F_GETFL);
     fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK);
     for (;;)
@@ -411,8 +409,6 @@ String GetPlatform()
     return "Android";
 #elif defined(IOS)
     return "iOS";
-#elif defined(TVOS)
-    return "tvOS";
 #elif defined(__APPLE__)
     return "macOS";
 #elif defined(_WIN32)
@@ -438,12 +434,6 @@ unsigned GetNumPhysicalCPUs()
     return Min(2, data.physical_cpu);
 #else
     return data.physical_cpu;
-#endif
-#elif defined(TVOS)
-#if defined(TARGET_OS_SIMULATOR)
-    return Min(2, SDL_TVOS_GetActiveProcessorCount());
-#else
-    return SDL_TVOS_GetActiveProcessorCount();
 #endif
 #elif defined(__linux__)
     struct CpuCoreCount data{};
@@ -471,12 +461,6 @@ unsigned GetNumLogicalCPUs()
     return Min(2, data.logical_cpu);
 #else
     return data.logical_cpu;
-#endif
-#elif defined(TVOS)
-#if defined(TARGET_OS_SIMULATOR)
-    return Min(2, SDL_TVOS_GetActiveProcessorCount());
-#else
-    return SDL_TVOS_GetActiveProcessorCount();
 #endif
 #elif defined(__linux__)
     struct CpuCoreCount data{};
@@ -552,7 +536,7 @@ String GetLoginName()
     DWORD len = UNLEN + 1;
     if (GetUserName(name, &len))
         return name;
-#elif defined(__APPLE__) && !defined(IOS) && !defined(TVOS)
+#elif defined(__APPLE__) && !defined(IOS)
     SCDynamicStoreRef s = SCDynamicStoreCreate(NULL, CFSTR("GetConsoleUser"), NULL, NULL);
     if (s != NULL)
     {

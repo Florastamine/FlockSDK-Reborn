@@ -26,7 +26,7 @@
 #include "../IO/IOEvents.h"
 #include "../IO/Log.h"
 
-#if defined(IOS) || defined(TVOS)
+#if defined(IOS)
 #include "../Graphics/Graphics.h"
 #include <SDL/SDL.h>
 #endif
@@ -36,7 +36,7 @@
 namespace Urho3D
 {
 
-#if defined(IOS) || defined(TVOS) || defined(__EMSCRIPTEN__)
+#if defined(IOS) || defined(__EMSCRIPTEN__)
 // Code for supporting SDL_iPhoneSetAnimationCallback() and emscripten_set_main_loop_arg()
 #if defined(__EMSCRIPTEN__)
 #include <emscripten/emscripten.h>
@@ -81,7 +81,7 @@ int Application::Run()
             return exitCode_;
 
         // Platforms other than iOS/tvOS and Emscripten run a blocking main loop
-#if !defined(IOS) && !defined(TVOS) && !defined(__EMSCRIPTEN__)
+#if !defined(IOS) && !defined(__EMSCRIPTEN__)
         while (!engine_->IsExiting())
             engine_->RunFrame();
 
@@ -89,7 +89,7 @@ int Application::Run()
         // iOS/tvOS will setup a timer for running animation frames so eg. Game Center can run. In this case we do not
         // support calling the Stop() function, as the application will never stop manually
 #else
-#if defined(IOS) || defined(TVOS)
+#if defined(IOS)
         SDL_iPhoneSetAnimationCallback(GetSubsystem<Graphics>()->GetWindow(), 1, &RunFrame, engine_);
 #elif defined(__EMSCRIPTEN__)
         emscripten_set_main_loop_arg(RunFrame, engine_, 0, 1);
