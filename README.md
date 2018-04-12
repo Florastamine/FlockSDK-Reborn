@@ -16,3 +16,14 @@ Flock SDK Reborn is an attempt to reboot [Flock SDK](https://github.com/Florasta
 * Add support for `LightDecalSet` & `SingleDecalSet`.
 * Platform deployment tools.
 * Steamworks SDK integration.
+
+## Platform-dependent APIs compatibility
+|                   API                   | Windows | Linux |
+|:---------------------------------------:|:-------:|:-----:|
+| `Graphics::SetBrightnessLevel(float f)` |    X    |       |
+
+## Rendering features compatibility
+
+| Feature | OpenGL 3.2 | Direct3D 9 | Direct3D 11 |
+|---------|------------|------------|-------------|
+| ProcSky |      X     |            |             |
