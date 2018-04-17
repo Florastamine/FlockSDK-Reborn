@@ -413,8 +413,6 @@ String GetPlatform()
     return "macOS";
 #elif defined(_WIN32)
     return "Windows";
-#elif defined(RPI)
-    return "Raspberry Pi";
 #elif defined(__EMSCRIPTEN__)
     return "Web";
 #elif defined(__linux__)

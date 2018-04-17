@@ -2124,12 +2124,7 @@ unsigned Graphics::GetFormat(CompressedFormat format) const
 
 unsigned Graphics::GetMaxBones()
 {
-#ifdef RPI
-    // At the moment all RPI GPUs are low powered and only have limited number of uniforms
-    return 32;
-#else
     return gl3Support ? 128 : 64;
-#endif
 }
 
 bool Graphics::GetGL3Support()

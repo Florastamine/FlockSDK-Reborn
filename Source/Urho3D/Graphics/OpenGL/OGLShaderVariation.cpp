@@ -150,10 +150,6 @@ bool ShaderVariation::Create()
 #endif
     }
 
-#ifdef RPI
-    if (type_ == VS)
-        shaderCode += "#define RPI\n";
-#endif
 #ifdef __EMSCRIPTEN__
     shaderCode += "#define WEBGL\n";
 #endif
