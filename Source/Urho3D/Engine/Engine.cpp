@@ -84,6 +84,9 @@ typedef struct _CrtMemBlockHeader
 } _CrtMemBlockHeader;
 #endif
 
+static const auto DefaultResourceDirectory = Urho3D::String("pandora");
+static const auto DefaultBaseResourceDirectory = Urho3D::String("pandora_core");
+
 namespace Urho3D
 {
 
@@ -329,9 +332,9 @@ bool Engine::InitializeResourceCache(const VariantMap& parameters, bool removeOl
     for (unsigned i = 0; i < resourcePrefixPaths.Size(); ++i)
         resourcePrefixPaths[i] = AddTrailingSlash(
             IsAbsolutePath(resourcePrefixPaths[i]) ? resourcePrefixPaths[i] : fileSystem->GetProgramDir() + resourcePrefixPaths[i]);
-    Vector<String> resourcePaths = GetParameter(parameters, EP_RESOURCE_PATHS, "Data;CoreData").GetString().Split(';');
+    Vector<String> resourcePaths = GetParameter(parameters, EP_RESOURCE_PATHS, DefaultResourceDirectory).GetString().Split(';');
     Vector<String> resourcePackages = GetParameter(parameters, EP_RESOURCE_PACKAGES).GetString().Split(';');
-    Vector<String> autoLoadPaths = GetParameter(parameters, EP_AUTOLOAD_PATHS, "Autoload").GetString().Split(';');
+    Vector<String> autoLoadPaths = GetParameter(parameters, EP_AUTOLOAD_PATHS, DefaultBaseResourceDirectory).GetString().Split(';');
 
     for (unsigned i = 0; i < resourcePaths.Size(); ++i)
     {
@@ -341,7 +344,7 @@ bool Engine::InitializeResourceCache(const VariantMap& parameters, bool removeOl
             unsigned j = 0;
             for (; j < resourcePrefixPaths.Size(); ++j)
             {
-                String packageName = resourcePrefixPaths[j] + resourcePaths[i] + ".pak";
+                String packageName = resourcePrefixPaths[j] + resourcePaths[i] + ".dat";
                 if (fileSystem->FileExists(packageName))
                 {
                     if (cache->AddPackageFile(packageName))
@@ -430,7 +433,7 @@ bool Engine::InitializeResourceCache(const VariantMap& parameters, bool removeOl
 
                 // Add all the found package files (non-recursive)
                 Vector<String> paks;
-                fileSystem->ScanDir(paks, autoLoadPath, "*.pak", SCAN_FILES, false);
+                fileSystem->ScanDir(paks, autoLoadPath, "*.dat", SCAN_FILES, false);
                 for (unsigned y = 0; y < paks.Size(); ++y)
                 {
                     String pak = paks[y];

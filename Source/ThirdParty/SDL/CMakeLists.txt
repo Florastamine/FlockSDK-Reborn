@@ -296,10 +296,8 @@ dep_option(VIDEO_WAYLAND_QT_TOUCH  "QtWayland server support for Wayland video d
 # Urho3D - change the VIDEO_MIR default value to FALSE (SDL requires the bleeding edge of MIR version which normal Linux distros do not provide)
 dep_option(VIDEO_MIR           "Use Mir video driver" OFF UNIX_SYS OFF)
 dep_option(MIR_SHARED          "Dynamically load Mir support" ON VIDEO_MIR OFF)
-# Urho3D - only make VIDEO_RPI option available on Raspberry-Pi platform
-dep_option(VIDEO_RPI           "Use Raspberry Pi video driver" ON RPI OFF)
 # Urho3D - bug fix - make VIDEO_X11 build option available for desktop UNIX (including OSX) only
-dep_option(VIDEO_X11           "Use X11 video driver" ON "UNIX_SYS OR APPLE\;NOT RPI AND NOT IOS AND NOT TVOS" OFF)
+dep_option(VIDEO_X11           "Use X11 video driver" ON "UNIX_SYS OR APPLE\;NOT IOS AND NOT TVOS" OFF)
 dep_option(X11_SHARED          "Dynamically load X11 support" ON VIDEO_X11 OFF)
 foreach(_SUB Xcursor Xinerama XInput Xrandr Xscrnsaver XShape Xvm)
   string(TOUPPER "VIDEO_X11_${_SUB}" _OPT)
@@ -310,7 +308,7 @@ endforeach()
 dep_option(VIDEO_COCOA         "Use Cocoa video driver" ON "APPLE AND NOT IOS AND NOT TVOS" OFF)
 # Urho3D - only make DIRECTX option available on Windows platform when URHO3D_OPENGL is enabled, i.e. DIRECTX variable must always be ON (not an option) when URHO3D_OPENGL is disabled because in this case it must depend on Direct3D which is a component of DirectX
 if (WINDOWS)
-  dep_option(DIRECTX           "Use DirectX for Windows audio/video" ON)
+  dep_option(DIRECTX           "Use DirectX for Windows audio/video" ON WIN32 ON)
 else ()
   set (DIRECTX OFF)  # Make it off explicitly when not targeting Windows platform, just in case user passes it in accidentally via CLI
 endif ()
