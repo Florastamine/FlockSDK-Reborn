@@ -42,10 +42,8 @@ namespace Urho3D
 Texture3D::Texture3D(Context* context) :
     Texture(context)
 {
-#ifdef URHO3D_OPENGL
 #ifndef GL_ES_VERSION_2_0
     target_ = GL_TEXTURE_3D;
-#endif
 #endif
 }
 

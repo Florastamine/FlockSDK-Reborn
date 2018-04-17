@@ -987,12 +987,10 @@ void UI::Render(VertexBuffer* buffer, const PODVector<UIBatch>& batches, unsigne
 
     if (surface)
     {
-#ifdef URHO3D_OPENGL
         // On OpenGL, flip the projection if rendering to a texture so that the texture can be addressed in the
         // same way as a render texture produced on Direct3D.
         offset.y_ = -offset.y_;
         scale.y_ = -scale.y_;
-#endif
     }
 
     Matrix4 projection(Matrix4::IDENTITY);
@@ -1006,12 +1004,10 @@ void UI::Render(VertexBuffer* buffer, const PODVector<UIBatch>& batches, unsigne
 
     graphics_->ClearParameterSources();
     graphics_->SetColorWrite(true);
-#ifdef URHO3D_OPENGL
     // Reverse winding if rendering to texture on OpenGL
     if (surface)
         graphics_->SetCullMode(CULL_CW);
     else
-#endif
         graphics_->SetCullMode(CULL_CCW);
     graphics_->SetDepthTest(CMP_ALWAYS);
     graphics_->SetDepthWrite(false);
@@ -1073,7 +1069,6 @@ void UI::Render(VertexBuffer* buffer, const PODVector<UIBatch>& batches, unsigne
         scissor.bottom_ = (int)(scissor.bottom_ * uiScale_);
 
         // Flip scissor vertically if using OpenGL texture rendering
-#ifdef URHO3D_OPENGL
         if (surface)
         {
             int top = scissor.top_;
@@ -1081,7 +1076,6 @@ void UI::Render(VertexBuffer* buffer, const PODVector<UIBatch>& batches, unsigne
             scissor.top_ = viewSize.y_ - bottom;
             scissor.bottom_ = viewSize.y_ - top;
         }
-#endif
 
         graphics_->SetBlendMode(batch.blendMode_);
         graphics_->SetScissorTest(true, scissor);

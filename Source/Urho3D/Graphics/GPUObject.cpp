@@ -33,11 +33,7 @@ namespace Urho3D
 GPUObject::GPUObject(Graphics* graphics) :
     graphics_(graphics)
 {
-#ifdef URHO3D_OPENGL
     object_.name_ = 0;
-#else
-    object_.ptr_ = nullptr;
-#endif
 
     if (graphics_)
         graphics->AddGPUObject(this);
@@ -51,10 +47,8 @@ GPUObject::~GPUObject()
 
 void GPUObject::OnDeviceLost()
 {
-#ifdef URHO3D_OPENGL
     // On OpenGL the object has already been lost at this point; reset object name
     object_.name_ = 0;
-#endif
 }
 
 void GPUObject::OnDeviceReset()
