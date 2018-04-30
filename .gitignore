@@ -109,3 +109,4 @@ configure*
 *.bak
 Thumbs.db
 .directory
+out/

@@ -1,0 +1,51 @@
+$#include "Extensions/ProcSky/ProcSkyCore.h" 
+
+class ProcSky : public Component 
+{
+    bool Initialize();
+    void Update();
+
+    void SetUpdateAuto(bool updateAuto); 
+    bool GetUpdateAuto() const; 
+	
+    float GetUpdateInterval() const; 
+
+    float GetUpdateWait() const;
+    void SetUpdateWait(float f);
+
+    void SetRenderSize(unsigned size);
+    unsigned GetRenderSize() const; 
+
+    float GetRayleighBrightness() const;
+    void SetRayleighBrightness(float f);
+
+    Vector3 GetAirAbsorptionProfile() const;
+    void SetAirAbsorptionProfile(const Vector3 &v);
+
+    float GetMieBrightness() const;
+    void SetMieBrightness(float f);
+
+    float GetSpotBrightness() const;
+    void SetSpotBrightness(float f);
+
+    float GetScatteringStrength() const;
+    void SetScatteringStrength(float f);
+
+    float GetRayleighStrength() const;
+    void SetRayleighStrength(float f);
+
+    float GetMieStrength() const;
+    void SetMieStrength(float f);
+
+    float GetRayleighCollectionPower() const;
+    void SetRayleighCollectionPower(float f);
+
+    float GetMieCollectionPower() const;
+    void SetMieCollectionPower(float f);
+
+    float GetMieDistribution() const;
+    void SetMieDistribution(float f);
+    
+    void SetProjectionCamera(Camera *camera);
+    Camera *GetProjectionCamera() const;
+};

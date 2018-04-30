@@ -109,10 +109,7 @@ elseif (WIN32)
 elseif (WEB)
     set (CPACK_SYSTEM_NAME Web)
 elseif (CPACK_SYSTEM_NAME STREQUAL Linux)
-    if (RPI)
-        set (CPACK_SYSTEM_NAME Raspberry-Pi)
-        set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE armhf)
-    elseif (ARM)
+    if (ARM)
         set (CPACK_SYSTEM_NAME ARM)     # Generic ARM
         if (URHO3D_64BIT)
             set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE arm64)
@@ -146,8 +143,6 @@ set (CPACK_SYSTEM_NAME ${CPACK_SYSTEM_NAME}-${URHO3D_LIB_TYPE})
 
 if (ANDROID AND X86)    # Take advantage of Android toolchain setting X86 variable to true for both 'x86' and 'x86_64' ABIs
     set (CPACK_SYSTEM_NAME ${CPACK_SYSTEM_NAME}-IA)     # Stands for Intel Architecture
-elseif (RPI AND RPI_ABI MATCHES ^armeabi-v7a)
-    set (CPACK_SYSTEM_NAME ${CPACK_SYSTEM_NAME}-v7a)
 elseif (ARM_ABI_FLAGS)
     string (REGEX REPLACE "^.*mcpu=([^ ]+).*$" -\\1 CPU_NAME "${ARM_ABI_FLAGS}")
     string (REGEX REPLACE .*- - CPU_NAME "${CPU_NAME}")
