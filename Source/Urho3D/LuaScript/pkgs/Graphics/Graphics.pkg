@@ -68,6 +68,14 @@ class Graphics : public Object
     void Raise() const;
     Vector3 GetDisplayDPI(int monitor=0) const;
 
+    String GetAdapterName() const;
+    String GetAPIVersion() const;
+    unsigned GetGPUMaxTextureSize() const;
+    String GetSupportedExtensions() const;
+    unsigned GetNumSupportedExtensions() const;
+    bool HasExtension(const String &s) const;
+    unsigned GetTotalVideoMemory() const;
+
     static unsigned GetAlphaFormat();
     static unsigned GetLuminanceFormat();
     static unsigned GetLuminanceAlphaFormat();

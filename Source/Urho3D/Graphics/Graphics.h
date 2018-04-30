@@ -266,6 +266,27 @@ public:
 
     /// Return window title.
     const String& GetWindowTitle() const { return windowTitle_; }
+    
+    /// Return graphics API version.
+    String GetAPIVersion() const; 
+
+    /// Return the current graphics device in use.
+    String GetAdapterName() const; 
+
+    /// Return the current graphics device's maximum supported texture size.
+    unsigned GetGPUMaxTextureSize() const; 
+
+    /// Return the number of OpenGL extensions supported by the graphics device.
+    unsigned GetNumSupportedExtensions() const; 
+
+    /// Return a list of OpenGL extensions supported by the graphics device.
+    String GetSupportedExtensions() const; 
+
+    /// Return true if the given extension is supported by the graphics device in use. 
+    bool HasExtension(const String &s) const;
+
+    /// Return the GPU's maximum amount of video memory (VRAM). Due to technical limitations, only NVIDIA is supported at the moment.
+    unsigned GetTotalVideoMemory() const;
 
     /// Return graphics API name.
     const String& GetApiName() const { return apiName_; }

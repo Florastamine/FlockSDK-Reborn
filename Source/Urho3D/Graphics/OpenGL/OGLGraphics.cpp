@@ -76,6 +76,8 @@ extern "C"
 
 namespace Urho3D
 {
+    
+static String GLExtensionCache = String::EMPTY; 
 
 static const unsigned glCmpFunc[] =
 {
@@ -3381,6 +3383,62 @@ void Graphics::SetVertexAttribDivisor(unsigned location, unsigned divisor)
         glVertexAttribDivisorANGLE(location, divisor);
 #endif
 #endif
+}
+
+String Graphics::GetAdapterName() const 
+{
+    return String((const char *) (glGetString(GL_VENDOR))) + " " + (const char *) (glGetString(GL_RENDERER)); 
+}
+
+String Graphics::GetAPIVersion() const 
+{
+    return String("OpenGL ") + (const char *) glGetString(GL_VERSION) + " (GLSL " + (const char *) glGetString(GL_SHADING_LANGUAGE_VERSION) + ")"; 
+}
+
+unsigned Graphics::GetGPUMaxTextureSize() const
+{
+    GLint n = 0u;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &n);
+    return (unsigned) n;
+}
+
+unsigned Graphics::GetNumSupportedExtensions() const
+{
+    GLint n = 0u;
+    glGetIntegerv(GL_NUM_EXTENSIONS, &n);
+    return (unsigned) n; 
+}
+
+String Graphics::GetSupportedExtensions() const
+{
+    auto n = GetNumSupportedExtensions();
+    String s;
+    for(auto i = 0u; i < n; ++i)
+        s += reinterpret_cast<const char *>(glGetStringi(GL_EXTENSIONS, i)) + (i != n - 1 ? ";" : String::EMPTY); 
+    
+    return s;
+}
+
+bool Graphics::HasExtension(const String &s) const
+{
+    if(GLExtensionCache == String::EMPTY)
+        GLExtensionCache = GetSupportedExtensions(); 
+    
+    return GLExtensionCache.Contains(s); 
+}
+
+unsigned Graphics::GetTotalVideoMemory() const
+{
+    GLuint m = 0u;
+    const String GPUName = GetAdapterName();
+    if(GPUName.Contains("NVIDIA", false) && HasExtension("GL_NVX_gpu_memory_info"))
+    {
+        #define GL_GPU_MEM_INFO_TOTAL_AVAILABLE_MEM_NVX 0x9048
+        glGetIntegerv(GL_GPU_MEM_INFO_TOTAL_AVAILABLE_MEM_NVX, (GLint *) &m);
+        #undef GL_GPU_MEM_INFO_TOTAL_AVAILABLE_MEM_NVX 
+    }
+
+    return (unsigned) m; 
 }
 
 }
