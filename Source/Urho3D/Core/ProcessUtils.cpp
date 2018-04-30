@@ -706,4 +706,35 @@ int GetBatteryTimeLeft()
     return secs;
 }
 
+bool GetCPUBigEndian()
+{
+    int n = 1;
+    return *(char *)&n == 1;
+}
+
+bool GetCPULittleEndian()
+{
+    return !GetCPUBigEndian(); 
+}
+
+unsigned long long GetCPUClock()
+{
+#if defined(__linux__) && !defined(__ANDROID__)
+    std::ifstream cpuinfo("/proc/cpuinfo"); 
+    if(cpuinfo.is_open())
+    {
+        for(std::string line; std::getline(cpuinfo, line);)
+        {
+            if(0 == line.find("cpu MHz"))
+                return static_cast<unsigned long long>(std::strtod(line.c_str() + line.find_first_of(':') + 1, nullptr)); 
+        }
+    }
+#elif defined(_WIN32)
+    LARGE_INTEGER f; 
+    QueryPerformanceFrequency(&f); 
+    return static_cast<unsigned long long>(f.QuadPart / 1000.0); 
+#endif
+    return 0ull;
+}
+
 }

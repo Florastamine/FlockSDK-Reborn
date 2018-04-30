@@ -83,4 +83,8 @@ URHO3D_API String GetOSVersion();
 URHO3D_API int GetBatteryPercentage();
 /// Return the total amount of time left (in seconds) before the battery runs out of power.
 URHO3D_API int GetBatteryTimeLeft();
+/// Return true if the current machine is operating under big endian mode, and vice versa. 
+URHO3D_API bool GetCPUBigEndian();
+/// Return true if the current machine is operating under little endian mode, and vice versa. 
+URHO3D_API bool GetCPULittleEndian();
 }
