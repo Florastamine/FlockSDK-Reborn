@@ -21,3 +21,6 @@ unsigned long long GetTotalMemory();
 String GetLoginName();
 String GetHostName();
 String GetOSVersion();
+
+int GetBatteryPercentage();
+int GetBatteryTimeLeft();

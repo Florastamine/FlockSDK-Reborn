@@ -692,4 +692,18 @@ String GetOSVersion()
     return "(?)";
 }
 
+int GetBatteryPercentage()
+{
+    int pct;
+    SDL_GetPowerInfo(nullptr, &pct);
+    return pct;
+}
+
+int GetBatteryTimeLeft()
+{
+    int secs;
+    SDL_GetPowerInfo(&secs, nullptr);
+    return secs;
+}
+
 }

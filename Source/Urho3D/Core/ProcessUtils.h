@@ -79,4 +79,8 @@ URHO3D_API String GetLoginName();
 URHO3D_API String GetHostName();
 /// Return the version of the currently running OS, or (?) if not identified.
 URHO3D_API String GetOSVersion();
+/// Return the current battery percentage (0% - 100%).
+URHO3D_API int GetBatteryPercentage();
+/// Return the total amount of time left (in seconds) before the battery runs out of power.
+URHO3D_API int GetBatteryTimeLeft();
 }
