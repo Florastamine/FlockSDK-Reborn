@@ -30,39 +30,46 @@
 #include <fcntl.h>
 
 #ifdef __APPLE__
-#include "TargetConditionals.h"
+    #include "TargetConditionals.h"
 #endif
 
 #if defined(IOS)
-#include <mach/mach_host.h>
-#elif !defined(__linux__) && !defined(__EMSCRIPTEN__)
-#include <LibCpuId/libcpuid.h>
+    #include <mach/mach_host.h>
 #endif
 
 #if defined(_WIN32)
-#include <windows.h>
-#include <io.h>
-#if defined(_MSC_VER)
-#include <float.h>
-#include <Lmcons.h> // For UNLEN.
-#elif defined(__MINGW32__)
-#include <lmcons.h> // For UNLEN. Apparently MSVC defines "<Lmcons.h>" (with an upperscore 'L' but MinGW uses an underscore 'l').
-#include <ntdef.h>
-#endif
-#elif defined(__linux__) && !defined(__ANDROID__)
-#include <pwd.h>
-#include <sys/sysinfo.h>
-#include <sys/utsname.h>
+    #include <windows.h>
+    #include <io.h>
+    #include <shlobj.h>
+    #include <tlhelp32.h>
+    #if defined(__MINGW32__)
+        #include <lmcons.h>
+        #include <ntdef.h> 
+    #endif
+    #include <bitset>
+    #include <vector>
+#elif defined(__linux__) && !defined(__ANDROID__) 
+    #include <pwd.h> 
+    #include <sys/sysinfo.h>
+    #include <sys/utsname.h>
+    #include <fstream> 
+    #include <string> 
+    #include <clocale> 
 #elif defined(__APPLE__)
-#include <sys/sysctl.h>
-#include <SystemConfiguration/SystemConfiguration.h> // For the detection functions inside GetLoginName().
+    #include <sys/sysctl.h>
+    #include <SystemConfiguration/SystemConfiguration.h> // For the detection functions inside GetLoginName(). 
 #endif
+
 #ifndef _WIN32
-#include <unistd.h>
+    #include <unistd.h>
 #endif
 
 #if defined(__EMSCRIPTEN__) && defined(__EMSCRIPTEN_PTHREADS__)
 #include <emscripten/threading.h>
+#endif
+
+#if defined(_WIN32) || (defined(__linux__) && !defined(__ANDROID__))
+    #include <thread> 
 #endif
 
 #if defined(__i386__)
@@ -100,6 +107,12 @@ inline void SetFPUState(unsigned control)
 namespace Urho3D
 {
 
+struct CpuCoreCount
+{
+    unsigned numPhysicalCores_;
+    unsigned numLogicalCores_;
+};
+
 #ifdef _WIN32
 static bool consoleOpened = false;
 #endif
@@ -115,12 +128,6 @@ static void GetCPUData(host_basic_info_data_t* data)
     host_info(mach_host_self(), HOST_BASIC_INFO, (host_info_t)data, &infoCount);
 }
 #elif defined(__linux__)
-struct CpuCoreCount
-{
-    unsigned numPhysicalCores_;
-    unsigned numLogicalCores_;
-};
-
 // This function is used by all the target triplets with Linux as the OS, such as Android, RPI, desktop Linux, etc
 static void GetCPUData(struct CpuCoreCount* data)
 {
@@ -157,14 +164,45 @@ static void GetCPUData(struct CpuCoreCount* data)
     }
 }
 
-#elif !defined(__EMSCRIPTEN__)
-static void GetCPUData(struct cpu_id_t* data)
+#elif defined(_WIN32) && !defined(__EMSCRIPTEN__)
+
+static CpuCoreCount __GetCPUInfo__()
 {
-    if (cpu_identify(nullptr, data) < 0)
+    CpuCoreCount r{};
+    
+    auto buffer = ([] () -> std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> {
+        DWORD b = 0;
+        std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> buffer;
+        
+        GetLogicalProcessorInformation(nullptr, &b);
+
+        buffer.resize(b / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION));
+        GetLogicalProcessorInformation(buffer.data(), &b);
+
+        return buffer;
+    })();
+
+    for(auto &&ca : buffer)
     {
-        data->num_logical_cpus = 1;
-        data->num_cores = 1;
+        switch(ca.Relationship)
+        {
+            case RelationProcessorCore: 
+            {
+                ++(r.numPhysicalCores_); 
+                r.numLogicalCores_ += static_cast<unsigned>(std::bitset<sizeof(ULONG_PTR) * 8>(ca.ProcessorMask).count());
+                break; 
+            }
+            
+            default:;
+        }
     }
+
+    return r; 
+}
+
+static void GetCPUData(struct CpuCoreCount* data)
+{
+    *data = __GetCPUInfo__();
 }
 #endif
 
@@ -444,9 +482,9 @@ unsigned GetNumPhysicalCPUs()
     return 1; // Targeting a single-threaded Emscripten build.
 #endif
 #else
-    struct cpu_id_t data;
+    struct CpuCoreCount data;
     GetCPUData(&data);
-    return (unsigned)data.num_cores;
+    return data.numPhysicalCores_;
 #endif
 }
 
@@ -460,20 +498,14 @@ unsigned GetNumLogicalCPUs()
 #else
     return data.logical_cpu;
 #endif
-#elif defined(__linux__)
-    struct CpuCoreCount data{};
-    GetCPUData(&data);
-    return data.numLogicalCores_;
 #elif defined(__EMSCRIPTEN__)
 #ifdef __EMSCRIPTEN_PTHREADS__
     return emscripten_num_logical_cores();
 #else
     return 1; // Targeting a single-threaded Emscripten build.
 #endif
-#else
-    struct cpu_id_t data;
-    GetCPUData(&data);
-    return (unsigned)data.num_logical_cpus;
+#elif defined(_WIN32) || (defined(__linux__) && !defined(__ANDROID__))
+    return std::thread::hardware_concurrency();
 #endif
 }
 

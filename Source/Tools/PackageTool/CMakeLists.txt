@@ -90,12 +90,6 @@ if (NOT CMAKE_PROJECT_NAME STREQUAL Urho3D)
     file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/${DEST_INCLUDE_DIR}/ThirdParty)
 
     # Add dependency targets
-    if (NOT CMAKE_SYSTEM_NAME STREQUAL Linux)
-        include (CheckIncludeFile)
-        check_include_file (stdint.h HAVE_STDINT_H)
-        add_subdirectory (${BAKED_CMAKE_SOURCE_DIR}/Source/ThirdParty/LibCpuId host/LibCpuId)
-        set (LIBS LibCpuId)
-    endif ()
     add_subdirectory (${BAKED_CMAKE_SOURCE_DIR}/Source/ThirdParty/LZ4 host/LZ4)
     set (INCLUDE_DIRS ${BAKED_CMAKE_BINARY_DIR}/include ${BAKED_CMAKE_BINARY_DIR}/include/Urho3D ${CMAKE_BINARY_DIR}/${DEST_INCLUDE_DIR}/ThirdParty)
 endif ()

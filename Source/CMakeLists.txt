@@ -109,9 +109,6 @@ endif ()
 
 if (NOT ANDROID AND NOT ARM AND NOT WEB)
 	add_subdirectory (ThirdParty/GLEW)
-    if (NOT CMAKE_SYSTEM_NAME STREQUAL Linux)
-        add_subdirectory (ThirdParty/LibCpuId)
-    endif ()
 endif ()
 
 # Urho3D game engine library
