@@ -91,4 +91,12 @@ URHO3D_API bool GetCPULittleEndian();
 URHO3D_API String GetCPUExtensions();
 /// Return processor's current usage.
 URHO3D_API double GetCPUUsage();
+/// Return processor's vendor ID.
+URHO3D_API String GetCPUVendorID(); 
+/// Return processor's brand name.
+URHO3D_API String GetCPUBrandName();
+/// Return processor architecture.
+URHO3D_API String GetCPUArchitecture();
+/// Return processor clock speed. (not the current clock speed!) 
+URHO3D_API unsigned long long GetCPUClock();
 }

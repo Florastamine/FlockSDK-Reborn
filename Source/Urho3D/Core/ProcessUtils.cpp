@@ -969,4 +969,68 @@ double GetCPUUsage()
 #endif
 }
 
+String GetCPUArchitecture()
+{
+#if defined(__linux__) && !defined(__ANDROID__) 
+    struct utsname u;
+    if (uname(&u) == 0)
+    {
+        String s(u.machine);
+        if(s.Contains("x86_64", false))
+            return "x86_64"; 
+        else if(s.Contains("IA64", false))
+            return "IA64"; 
+        else if(s.Contains("i686", false))
+            return "x86"; 
+        else if(s.Contains("ARM", false))
+            return "ARM"; 
+    }
+#elif defined(_WIN32)
+    SYSTEM_INFO s;
+    GetNativeSystemInfo(&s); // Because GetSystemInfo() would report incorrect results (x86 instead of x86_64) when running the application under WOW64 
+                             // environment (e.g. running 32-bit software under 64-bit OS). 
+
+    switch(s.wProcessorArchitecture)
+    {
+        case PROCESSOR_ARCHITECTURE_AMD64 : return "x86_64";
+        case PROCESSOR_ARCHITECTURE_IA64  : return "IA64"; 
+        case PROCESSOR_ARCHITECTURE_INTEL : return "x86";
+        case PROCESSOR_ARCHITECTURE_ARM   : return "ARM"; 
+        default: ;
+    }
+#endif
+    return "(Unknown architecture)"; 
+}
+
+String GetCPUVendorID()
+{
+    int c[4];
+    __GetCPUID__(c, 0); 
+
+    String s((const char *) &(c[1]), 4);
+    s += String((const char *) &(c[3]), 4);
+    s += String((const char *) &(c[2]), 4); 
+
+    return s;
+}
+
+String GetCPUBrandName()
+{
+    int c[4];
+    String s;
+    
+    #define __CPU_NAME_COPY_REGISTERS_DATA__(slot, id, string) \
+        __GetCPUID__(slot, id); \
+        for (auto i = 0u; i < 4; ++i) \
+            string += String((const char *) &(slot[i]), 4)
+
+    __CPU_NAME_COPY_REGISTERS_DATA__(c, 0x80000002, s);
+    __CPU_NAME_COPY_REGISTERS_DATA__(c, 0x80000003, s);
+    __CPU_NAME_COPY_REGISTERS_DATA__(c, 0x80000004, s);
+    
+    #undef __CPU_NAME_COPY_REGISTERS_DATA__
+
+    return s;
+}
+
 }

@@ -29,3 +29,7 @@ bool GetCPUBigEndian();
 bool GetCPULittleEndian();
 String GetCPUExtensions();
 double GetCPUUsage();
+String GetCPUVendorID(); 
+String GetCPUBrandName();
+String GetCPUArchitecture();
+unsigned long long GetCPUClock();
