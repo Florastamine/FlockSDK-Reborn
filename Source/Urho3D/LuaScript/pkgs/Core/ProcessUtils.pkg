@@ -22,6 +22,8 @@ String GetLoginName();
 String GetHostName();
 String GetOSVersion();
 
+String GetLocale();
+
 int GetBatteryPercentage();
 int GetBatteryTimeLeft();
 

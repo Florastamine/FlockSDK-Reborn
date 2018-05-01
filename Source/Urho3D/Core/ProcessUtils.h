@@ -99,4 +99,6 @@ URHO3D_API String GetCPUBrandName();
 URHO3D_API String GetCPUArchitecture();
 /// Return processor clock speed. (not the current clock speed!) 
 URHO3D_API unsigned long long GetCPUClock();
+/// Retrieve the system's current locale. 
+URHO3D_API String GetLocale();
 }
