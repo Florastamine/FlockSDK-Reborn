@@ -138,6 +138,42 @@ inline void SetFPUState(unsigned control)
     #define __PLATFORM__XCR_XFEATURE_ENABLED_MASK 0 
 #endif
 
+#if defined(_WIN32)
+struct SystemTimeData {
+    FILETIME sysIdle;
+    FILETIME sysKernel;
+    FILETIME sysUser;
+
+    operator=(const SystemTimeData &s)
+    {
+        sysIdle = s.sysIdle;
+        sysKernel = s.sysKernel;
+        sysUser = s.sysUser;
+    }
+
+    ULONGLONG GetIdleDiff(const SystemTimeData &s) const { return GetDiff(sysIdle, s.sysIdle); }
+    ULONGLONG GetKernelDiff(const SystemTimeData &s) const { return GetDiff(sysKernel, s.sysKernel); }
+    ULONGLONG GetUserDiff(const SystemTimeData &s) const { return GetDiff(sysUser, s.sysUser); }
+    
+    BOOL QueryValue() { return ::GetSystemTimes(&sysIdle, &sysKernel, &sysUser);  }
+
+private:
+    ULONGLONG GetDiff(const FILETIME &one, const FILETIME &two) const
+    {
+        LARGE_INTEGER a, b;
+        a.LowPart = one.dwLowDateTime;
+        a.HighPart = one.dwHighDateTime;
+
+        b.LowPart = two.dwLowDateTime;
+        b.HighPart = two.dwHighDateTime;
+
+        return a.QuadPart - b.QuadPart;
+    }
+};
+
+static SystemTimeData then;
+#endif
+
 #ifndef MINI_URHO
 #include <SDL/SDL.h>
 #endif
@@ -905,6 +941,32 @@ String GetCPUExtensions()
 
     s.Erase(s.Length() - 1);
     return s;
+}
+
+double GetCPUUsage()
+{
+#if defined(_WIN32)
+    SystemTimeData now;
+    if (!now.QueryValue())
+        return -1.0;
+
+    double usage = 0.0;
+
+    if (then.sysIdle.dwLowDateTime != 0 && then.sysIdle.dwHighDateTime != 0)
+    {
+        ULONGLONG sysIdleDiff = now.GetIdleDiff(then),
+                  sysKernelDiff = now.GetKernelDiff(then),
+                  sysUserDiff = now.GetUserDiff(then);
+
+        ULONGLONG sysTotal = sysKernelDiff + sysUserDiff;
+        ULONGLONG kernelTotal = sysKernelDiff - sysIdleDiff; // kernelTime - IdleTime = kernelTime, because sysKernel include IdleTime
+
+        usage = sysTotal > 0 ? (double) (((kernelTotal + sysUserDiff) * 100.0) / sysTotal) : usage;
+    }
+
+    then = now;
+    return usage;
+#endif
 }
 
 }

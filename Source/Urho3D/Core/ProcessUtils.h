@@ -89,4 +89,6 @@ URHO3D_API bool GetCPUBigEndian();
 URHO3D_API bool GetCPULittleEndian();
 /// Return processor's supported extensions.
 URHO3D_API String GetCPUExtensions();
+/// Return processor's current usage.
+URHO3D_API double GetCPUUsage();
 }
