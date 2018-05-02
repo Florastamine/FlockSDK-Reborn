@@ -220,16 +220,6 @@ SET(ASSIMP_LOADER_SRCS "")
 SET(ASSIMP_IMPORTERS_ENABLED "") # list of enabled importers
 SET(ASSIMP_IMPORTERS_DISABLED "") # disabled list (used to print)
 
-ADD_ASSIMP_IMPORTER( AMF
-  AMFImporter.hpp
-  AMFImporter_Macro.hpp
-  AMFImporter_Node.hpp
-  AMFImporter.cpp
-  AMFImporter_Geometry.cpp
-  AMFImporter_Material.cpp
-  AMFImporter_Postprocess.cpp
-)
-
 ADD_ASSIMP_IMPORTER( 3DS
   3DSConverter.cpp
   3DSHelper.h
@@ -263,11 +253,6 @@ ADD_ASSIMP_IMPORTER( ASSXML
   AssxmlExporter.cpp
 )
 
-ADD_ASSIMP_IMPORTER( B3D
-  B3DImporter.cpp
-  B3DImporter.h
-)
-
 ADD_ASSIMP_IMPORTER( BVH
   BVHLoader.cpp
   BVHLoader.h
@@ -294,27 +279,6 @@ ADD_ASSIMP_IMPORTER( CSM
   CSMLoader.h
 )
 
-ADD_ASSIMP_IMPORTER( HMP
-  HMPFileData.h
-  HMPLoader.cpp
-  HMPLoader.h
-  HalfLifeFileData.h
-)
-
-ADD_ASSIMP_IMPORTER( IRRMESH
-  IRRMeshLoader.cpp
-  IRRMeshLoader.h
-  IRRShared.cpp
-  IRRShared.h
-)
-
-ADD_ASSIMP_IMPORTER( IRR
-  IRRLoader.cpp
-  IRRLoader.h
-  IRRShared.cpp
-  IRRShared.h
-)
-
 ADD_ASSIMP_IMPORTER( LWO
   LWOAnimation.cpp
   LWOAnimation.h
@@ -330,19 +294,6 @@ ADD_ASSIMP_IMPORTER( LWS
   LWSLoader.h
 )
 
-ADD_ASSIMP_IMPORTER( MD2
-  MD2FileData.h
-  MD2Loader.cpp
-  MD2Loader.h
-  MD2NormalTable.h
-)
-
-ADD_ASSIMP_IMPORTER( MD3
-  MD3FileData.h
-  MD3Loader.cpp
-  MD3Loader.h
-)
-
 ADD_ASSIMP_IMPORTER( MD5
   MD5Loader.cpp
   MD5Loader.h
@@ -350,36 +301,11 @@ ADD_ASSIMP_IMPORTER( MD5
   MD5Parser.h
 )
 
-ADD_ASSIMP_IMPORTER( MDC
-  MDCFileData.h
-  MDCLoader.cpp
-  MDCLoader.h
-  MDCNormalTable.h
-)
-
-ADD_ASSIMP_IMPORTER( MDL
-  MDLDefaultColorMap.h
-  MDLFileData.h
-  MDLLoader.cpp
-  MDLLoader.h
-  MDLMaterialLoader.cpp
-)
-
 SET( MaterialSystem_SRCS
   MaterialSystem.cpp
   MaterialSystem.h
 )
 SOURCE_GROUP( MaterialSystem FILES ${MaterialSystem_SRCS})
-
-ADD_ASSIMP_IMPORTER( NFF
-  NFFLoader.cpp
-  NFFLoader.h
-)
-
-ADD_ASSIMP_IMPORTER( NDO
-  NDOLoader.cpp
-  NDOLoader.h
-)
 
 ADD_ASSIMP_IMPORTER( OFF
   OFFLoader.cpp
@@ -420,20 +346,6 @@ ADD_ASSIMP_IMPORTER( OPENGEX
   OpenGEXStructs.h
 )
 
-ADD_ASSIMP_IMPORTER( PLY
-  PlyLoader.cpp
-  PlyLoader.h
-  PlyParser.cpp
-  PlyParser.h
-  PlyExporter.cpp
-  PlyExporter.h
-)
-
-ADD_ASSIMP_IMPORTER( MS3D
-  MS3DLoader.cpp
-  MS3DLoader.h
-)
-
 ADD_ASSIMP_IMPORTER( COB
   COBLoader.cpp
   COBLoader.h
@@ -457,34 +369,6 @@ ADD_ASSIMP_IMPORTER( BLEND
   BlenderTessellator.h
   BlenderTessellator.cpp
 )
-
-ADD_ASSIMP_IMPORTER( IFC
-  IFCLoader.cpp
-  IFCLoader.h
-  IFCReaderGen1.cpp
-  IFCReaderGen2.cpp
-  IFCReaderGen.h
-  IFCUtil.h
-  IFCUtil.cpp
-  IFCGeometry.cpp
-  IFCMaterial.cpp
-  IFCProfile.cpp
-  IFCCurve.cpp
-  IFCBoolean.cpp
-  IFCOpenings.cpp
-  STEPFile.h
-  STEPFileReader.h
-  STEPFileReader.cpp
-  STEPFileEncoding.cpp
-  STEPFileEncoding.h
-)
-if (ASSIMP_BUILD_IFC_IMPORTER)
-  if (MSVC)
-    set_source_files_properties(IFCReaderGen1.cpp IFCReaderGen2.cpp PROPERTIES COMPILE_FLAGS "/bigobj")
-  elseif(CMAKE_COMPILER_IS_MINGW)
-    set_source_files_properties(IFCReaderGen1.cpp IFCReaderGen2.cpp PROPERTIES COMPILE_FLAGS "-O2")   # Urho3D: Remove -Wa,-mbig-obj flag as some older MinGW version may not support it yet
-  endif()
-endif (ASSIMP_BUILD_IFC_IMPORTER)
 
 ADD_ASSIMP_IMPORTER( XGL
   XGLLoader.cpp
@@ -583,16 +467,6 @@ ADD_ASSIMP_IMPORTER( Q3D
   Q3DLoader.h
 )
 
-ADD_ASSIMP_IMPORTER( Q3BSP
-  Q3BSPFileData.h
-  Q3BSPFileParser.h
-  Q3BSPFileParser.cpp
-  Q3BSPFileImporter.h
-  Q3BSPFileImporter.cpp
-  Q3BSPZipArchive.h
-  Q3BSPZipArchive.cpp
-)
-
 ADD_ASSIMP_IMPORTER( RAW
   RawLoader.cpp
   RawLoader.h
@@ -615,16 +489,6 @@ ADD_ASSIMP_IMPORTER( STL
   STLExporter.cpp
 )
 
-ADD_ASSIMP_IMPORTER( TERRAGEN
-  TerragenLoader.cpp
-  TerragenLoader.h
-)
-
-ADD_ASSIMP_IMPORTER( 3D
-  UnrealLoader.cpp
-  UnrealLoader.h
-)
-
 ADD_ASSIMP_IMPORTER( X
   XFileHelper.h
   XFileImporter.cpp
@@ -633,28 +497,6 @@ ADD_ASSIMP_IMPORTER( X
   XFileParser.h
   XFileExporter.h
   XFileExporter.cpp
-)
-
-ADD_ASSIMP_IMPORTER(X3D
-  X3DExporter.cpp
-  X3DExporter.hpp
-  X3DImporter.cpp
-  X3DImporter.hpp
-  X3DImporter_Geometry2D.cpp
-  X3DImporter_Geometry3D.cpp
-  X3DImporter_Group.cpp
-  X3DImporter_Light.cpp
-  X3DImporter_Macro.hpp
-  X3DImporter_Metadata.cpp
-  X3DImporter_Networking.cpp
-  X3DImporter_Node.hpp
-  X3DImporter_Postprocess.cpp
-  X3DImporter_Rendering.cpp
-  X3DImporter_Shape.cpp
-  X3DImporter_Texturing.cpp
-  FIReader.hpp
-  FIReader.cpp
-  X3DVocabulary.cpp
 )
 
 ADD_ASSIMP_IMPORTER( GLTF
