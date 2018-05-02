@@ -26,3 +26,5 @@ int GetBatteryPercentage();
 int GetBatteryTimeLeft();
 bool GetCPUBigEndian();
 bool GetCPULittleEndian();
+
+String GetCPUExtensions();

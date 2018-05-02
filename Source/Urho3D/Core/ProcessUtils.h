@@ -87,4 +87,6 @@ URHO3D_API int GetBatteryTimeLeft();
 URHO3D_API bool GetCPUBigEndian();
 /// Return true if the current machine is operating under little endian mode, and vice versa. 
 URHO3D_API bool GetCPULittleEndian();
+/// Return processor's supported extensions.
+URHO3D_API String GetCPUExtensions();
 }
