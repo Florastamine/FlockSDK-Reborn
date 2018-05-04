@@ -88,6 +88,7 @@
 #include "lib_table.c"
 #include "lib_io.c"
 #include "lib_lfs.c"
+#include "lib_md5.c"
 #include "lib_os.c"
 #include "lib_package.c"
 #include "lib_debug.c"

@@ -22,6 +22,7 @@
 #define LUA_BITLIBNAME	"bit"
 #define LUA_JITLIBNAME	"jit"
 #define LUA_FFILIBNAME	"ffi"
+#define LUA_MD5LIBNAME	"md5"
 
 LUALIB_API int luaopen_base(lua_State *L);
 LUALIB_API int luaopen_math(lua_State *L);
@@ -31,6 +32,7 @@ LUALIB_API int luaopen_io(lua_State *L);
 LUALIB_API int luaopen_os(lua_State *L);
 LUALIB_API int luaopen_package(lua_State *L);
 LUALIB_API int luaopen_lfs(lua_State *L);
+LUALIB_API int luaopen_md5(lua_State *L);
 LUALIB_API int luaopen_debug(lua_State *L);
 LUALIB_API int luaopen_bit(lua_State *L);
 LUALIB_API int luaopen_jit(lua_State *L);
