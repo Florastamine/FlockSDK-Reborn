@@ -1216,4 +1216,44 @@ String GetLocale()
     return "(?)"; 
 }
 
+bool IsInDebugger()
+{
+#if defined(_WIN32)
+    return ::IsDebuggerPresent();
+#elif defined(__linux__) && !defined(__ANDROID__)
+    // Slightly modified from https://stackoverflow.com/questions/3596781/how-to-detect-if-the-current-process-is-being-run-by-gdb
+    char buffer[1024];
+    int status_fd = open("/proc/self/status", O_RDONLY);
+    ssize_t num_read = (status_fd == -1) ? 0 : read(status_fd, buffer, sizeof(buffer) - 1);
+
+    if (num_read > 0)
+    {
+        static constexpr const char TracerPid[] = "TracerPid:";
+        char *tracer_pid;
+
+        buffer[num_read] = 0;
+        tracer_pid = strstr(buffer, TracerPid);
+        if (tracer_pid)
+            return !!atoi(tracer_pid + sizeof(TracerPid) - 1);
+    }
+#endif
+    return false;
+}
+
+String GetEnvVar(const String &var)
+{
+    const auto s = std::getenv(var.CString());
+    return s != nullptr ? s : String::EMPTY; 
+}
+
+bool HasEnvVar(const String &var)
+{
+    return std::getenv(var.CString()) != nullptr;
+}
+
+void SetEnvVar(const String &name, const String &val)
+{
+	SetEnvironmentVariable(name.CString(), val.CString());
+}
+
 }

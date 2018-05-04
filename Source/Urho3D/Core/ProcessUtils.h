@@ -101,4 +101,12 @@ URHO3D_API String GetCPUArchitecture();
 URHO3D_API unsigned long long GetCPUClock();
 /// Retrieve the system's current locale. 
 URHO3D_API String GetLocale();
+/// Return true if the game was run from within a debugger.
+URHO3D_API bool IsInDebugger();
+/// Return true if the environment variable in question exists.
+URHO3D_API bool HasEnvVar(const String &var);
+/// Return the value of the given environment variable. 
+URHO3D_API String GetEnvVar(const String &var);
+/// Set the environment variable's new content to the given value.
+URHO3D_API void SetEnvVar(const String &name, const String &val);
 }
