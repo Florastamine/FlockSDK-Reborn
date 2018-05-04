@@ -17,6 +17,7 @@
 #define LUA_IOLIBNAME	"io"
 #define LUA_OSLIBNAME	"os"
 #define LUA_LOADLIBNAME	"package"
+#define LUA_LFSLIBNAME	"lfs"
 #define LUA_DBLIBNAME	"debug"
 #define LUA_BITLIBNAME	"bit"
 #define LUA_JITLIBNAME	"jit"
@@ -29,6 +30,7 @@ LUALIB_API int luaopen_table(lua_State *L);
 LUALIB_API int luaopen_io(lua_State *L);
 LUALIB_API int luaopen_os(lua_State *L);
 LUALIB_API int luaopen_package(lua_State *L);
+LUALIB_API int luaopen_lfs(lua_State *L);
 LUALIB_API int luaopen_debug(lua_State *L);
 LUALIB_API int luaopen_bit(lua_State *L);
 LUALIB_API int luaopen_jit(lua_State *L);

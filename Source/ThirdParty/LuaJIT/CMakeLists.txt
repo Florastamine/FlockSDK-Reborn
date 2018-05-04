@@ -447,7 +447,8 @@ else ()
     endif ()
 endif ()
 set (LJLIB_C src/lib_base.c src/lib_math.c src/lib_bit.c src/lib_string.c src/lib_table.c
-    src/lib_io.c src/lib_os.c src/lib_package.c src/lib_debug.c src/lib_jit.c src/lib_ffi.c)
+    src/lib_io.c src/lib_os.c src/lib_package.c src/lib_debug.c src/lib_jit.c src/lib_ffi.c
+    src/lib_lfs.c)
 generate_source (${LJVM_BOUT} ${LJVM_MODE})
 foreach (MODE bcdef ffdef libdef recdef)
     generate_source (lj_${MODE}.h ${MODE} ${LJLIB_C})
