@@ -185,14 +185,6 @@ SET( Common_SRCS
 )
 SOURCE_GROUP(Common FILES ${Common_SRCS})
 
-IF ( ASSIMP_BUILD_NONFREE_C4D_IMPORTER )
-  SET( C4D_SRCS
-    C4DImporter.cpp
-    C4DImporter.h
-  )
-  SOURCE_GROUP( C4D FILES ${C4D_SRCS})
-ENDIF ( ASSIMP_BUILD_NONFREE_C4D_IMPORTER )
-
 # if this variable is set to TRUE, the user can manually disable importers by setting
 # ASSIMP_BUILD_XXX_IMPORTER to FALSE for each importer
 # if this variable is set to FALSE, the user can manually enable importers by setting
@@ -763,11 +755,6 @@ INCLUDE_DIRECTORIES(
     ../contrib/openddlparser/include
 )
 
-IF (ASSIMP_BUILD_NONFREE_C4D_IMPORTER)
-  SET( assimp_src ${assimp_src} ${C4D_SRCS})
-  INCLUDE_DIRECTORIES(${C4D_INCLUDES})
-ENDIF (ASSIMP_BUILD_NONFREE_C4D_IMPORTER)
-
 # Urho3D - commented out targets defined by the original CMakeLists.txt and use our own macro instead
 
 # Define target name
@@ -785,12 +772,6 @@ list (APPEND TARGET_PROPERTIES XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH YES)
 
 # Setup target
 setup_library ()
-
-IF (ASSIMP_BUILD_NONFREE_C4D_IMPORTER)
-  TARGET_LINK_LIBRARIES(Assimp optimized ${C4D_RELEASE_LIBRARIES})
-  TARGET_LINK_LIBRARIES(Assimp debug ${C4D_DEBUG_LIBRARIES})
-  TARGET_LINK_LIBRARIES(Assimp ${C4D_EXTRA_LIBRARIES})
-ENDIF (ASSIMP_BUILD_NONFREE_C4D_IMPORTER)
 
 # Add RT-extension library for glTF importer with Open3DGC-compression.
 IF (RT_FOUND AND ASSIMP_IMPORTER_GLTF_USE_OPEN3DGC)
