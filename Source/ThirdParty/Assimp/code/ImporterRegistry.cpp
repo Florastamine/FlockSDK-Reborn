@@ -89,23 +89,14 @@ corresponding preprocessor flag to selectively disable formats.
 #ifndef ASSIMP_BUILD_NO_SIB_IMPORTER
 #   include "SIBImporter.h"
 #endif
-#ifndef ASSIMP_BUILD_NO_OFF_IMPORTER
-#   include "OFFLoader.h"
-#endif
 #ifndef ASSIMP_BUILD_NO_AC_IMPORTER
 #   include "ACLoader.h"
 #endif
 #ifndef ASSIMP_BUILD_NO_BVH_IMPORTER
 #   include "BVHLoader.h"
 #endif
-#ifndef ASSIMP_BUILD_NO_Q3D_IMPORTER
-#   include "Q3DLoader.h"
-#endif
 #ifndef ASSIMP_BUILD_NO_COLLADA_IMPORTER
 #   include "ColladaLoader.h"
-#endif
-#ifndef ASSIMP_BUILD_NO_CSM_IMPORTER
-#   include "CSMLoader.h"
 #endif
 #ifndef ASSIMP_BUILD_NO_LWS_IMPORTER
 #   include "LWSLoader.h"
@@ -116,14 +107,8 @@ corresponding preprocessor flag to selectively disable formats.
 #ifndef ASSIMP_BUILD_NO_OPENGEX_IMPORTER
 #   include "OpenGEXImporter.h"
 #endif
-#ifndef ASSIMP_BUILD_NO_COB_IMPORTER
-#   include "COBLoader.h"
-#endif
 #ifndef ASSIMP_BUILD_NO_BLEND_IMPORTER
 #   include "BlenderLoader.h"
-#endif
-#ifndef ASSIMP_BUILD_NO_XGL_IMPORTER
-#   include "XGLLoader.h"
 #endif
 #ifndef ASSIMP_BUILD_NO_FBX_IMPORTER
 #   include "FBXImporter.h"
@@ -134,15 +119,6 @@ corresponding preprocessor flag to selectively disable formats.
 #ifndef ASSIMP_BUILD_NO_GLTF_IMPORTER
 #   include "glTFImporter.h"
 #   include "glTF2Importer.h"
-#endif
-#ifndef ASSIMP_BUILD_NO_C4D_IMPORTER
-#   include "C4DImporter.h"
-#endif
-#ifndef ASSIMP_BUILD_NO_3MF_IMPORTER
-#   include "D3MFImporter.h"
-#endif
-#ifndef ASSIMP_BUILD_NO_MMD_IMPORTER
-#   include "MMDImporter.h"
 #endif
 
 namespace Assimp {
@@ -190,23 +166,14 @@ void GetImporterInstanceList(std::vector< BaseImporter* >& out)
 #if (!defined ASSIMP_BUILD_NO_SIB_IMPORTER)
     out.push_back( new SIBImporter());
 #endif
-#if (!defined ASSIMP_BUILD_NO_OFF_IMPORTER)
-    out.push_back( new OFFImporter());
-#endif
 #if (!defined ASSIMP_BUILD_NO_AC_IMPORTER)
     out.push_back( new AC3DImporter());
 #endif
 #if (!defined ASSIMP_BUILD_NO_BVH_IMPORTER)
     out.push_back( new BVHLoader());
 #endif
-#if (!defined ASSIMP_BUILD_NO_Q3D_IMPORTER)
-    out.push_back( new Q3DImporter());
-#endif
 #if (!defined ASSIMP_BUILD_NO_COLLADA_IMPORTER)
     out.push_back( new ColladaLoader());
-#endif
-#if (!defined ASSIMP_BUILD_NO_CSM_IMPORTER)
-    out.push_back( new CSMImporter());
 #endif
 #if (!defined ASSIMP_BUILD_NO_LWS_IMPORTER)
     out.push_back( new LWSImporter());
@@ -217,14 +184,8 @@ void GetImporterInstanceList(std::vector< BaseImporter* >& out)
 #if (!defined ASSIMP_BUILD_NO_OPENGEX_IMPORTER )
     out.push_back( new OpenGEX::OpenGEXImporter() );
 #endif
-#if (!defined ASSIMP_BUILD_NO_COB_IMPORTER)
-    out.push_back( new COBImporter());
-#endif
 #if (!defined ASSIMP_BUILD_NO_BLEND_IMPORTER)
     out.push_back( new BlenderImporter());
-#endif
-#if ( !defined ASSIMP_BUILD_NO_XGL_IMPORTER )
-    out.push_back( new XGLImporter() );
 #endif
 #if ( !defined ASSIMP_BUILD_NO_FBX_IMPORTER )
     out.push_back( new FBXImporter() );
@@ -235,15 +196,6 @@ void GetImporterInstanceList(std::vector< BaseImporter* >& out)
 #if ( !defined ASSIMP_BUILD_NO_GLTF_IMPORTER )
     out.push_back( new glTFImporter() );
     out.push_back( new glTF2Importer() );
-#endif
-#if ( !defined ASSIMP_BUILD_NO_C4D_IMPORTER )
-    out.push_back( new C4DImporter() );
-#endif
-#if ( !defined ASSIMP_BUILD_NO_3MF_IMPORTER )
-    out.push_back( new D3MFImporter() );
-#endif
-#ifndef ASSIMP_BUILD_NO_MMD_IMPORTER
-    out.push_back( new MMDImporter() );
 #endif
 }
 

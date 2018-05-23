@@ -185,14 +185,6 @@ SET( Common_SRCS
 )
 SOURCE_GROUP(Common FILES ${Common_SRCS})
 
-IF ( ASSIMP_BUILD_NONFREE_C4D_IMPORTER )
-  SET( C4D_SRCS
-    C4DImporter.cpp
-    C4DImporter.h
-  )
-  SOURCE_GROUP( C4D FILES ${C4D_SRCS})
-ENDIF ( ASSIMP_BUILD_NONFREE_C4D_IMPORTER )
-
 # if this variable is set to TRUE, the user can manually disable importers by setting
 # ASSIMP_BUILD_XXX_IMPORTER to FALSE for each importer
 # if this variable is set to FALSE, the user can manually enable importers by setting
@@ -274,10 +266,6 @@ ADD_ASSIMP_IMPORTER( DXF
   DXFHelper.h
 )
 
-ADD_ASSIMP_IMPORTER( CSM
-  CSMLoader.cpp
-  CSMLoader.h
-)
 
 ADD_ASSIMP_IMPORTER( LWO
   LWOAnimation.cpp
@@ -306,11 +294,6 @@ SET( MaterialSystem_SRCS
   MaterialSystem.h
 )
 SOURCE_GROUP( MaterialSystem FILES ${MaterialSystem_SRCS})
-
-ADD_ASSIMP_IMPORTER( OFF
-  OFFLoader.cpp
-  OFFLoader.h
-)
 
 ADD_ASSIMP_IMPORTER( OBJ
   ObjFileData.h
@@ -346,12 +329,6 @@ ADD_ASSIMP_IMPORTER( OPENGEX
   OpenGEXStructs.h
 )
 
-ADD_ASSIMP_IMPORTER( COB
-  COBLoader.cpp
-  COBLoader.h
-  COBScene.h
-)
-
 ADD_ASSIMP_IMPORTER( BLEND
   BlenderLoader.cpp
   BlenderLoader.h
@@ -369,12 +346,6 @@ ADD_ASSIMP_IMPORTER( BLEND
   BlenderTessellator.h
   BlenderTessellator.cpp
 )
-
-ADD_ASSIMP_IMPORTER( XGL
-  XGLLoader.cpp
-  XGLLoader.h
-)
-
 
 ADD_ASSIMP_IMPORTER( FBX
   FBXImporter.cpp
@@ -462,11 +433,6 @@ SOURCE_GROUP( PostProcessing FILES ${PostProcessing_SRCS})
 SET( IrrXML_SRCS irrXMLWrapper.h )
 SOURCE_GROUP( IrrXML FILES ${IrrXML_SRCS})
 
-ADD_ASSIMP_IMPORTER( Q3D
-  Q3DLoader.cpp
-  Q3DLoader.h
-)
-
 ADD_ASSIMP_IMPORTER( RAW
   RawLoader.cpp
   RawLoader.h
@@ -516,26 +482,6 @@ ADD_ASSIMP_IMPORTER( GLTF
   glTF2Importer.h
   glTF2Exporter.h
   glTF2Exporter.cpp
-)
-
-ADD_ASSIMP_IMPORTER( 3MF
-    D3MFImporter.h
-    D3MFImporter.cpp
-    D3MFExporter.h
-    D3MFExporter.cpp
-    D3MFOpcPackage.h
-    D3MFOpcPackage.cpp
-    3MFXmlTags.h
-)
-
-ADD_ASSIMP_IMPORTER( MMD
-  MMDCpp14.h
-  MMDImporter.cpp
-  MMDImporter.h
-  MMDPmdParser.h
-  MMDPmxParser.h
-  MMDPmxParser.cpp
-  MMDVmdParser.h
 )
 
 SET( Step_SRCS
@@ -724,9 +670,7 @@ endif ( MSVC )
 SET (unzip_compile_SRCS ${unzip_SRCS})
 INCLUDE_DIRECTORIES( "../contrib/unzip/" )
 
-# Urho3D: disable status prints
-#MESSAGE(STATUS "Enabled formats:${ASSIMP_IMPORTERS_ENABLED}")
-#MESSAGE(STATUS "Disabled formats:${ASSIMP_IMPORTERS_DISABLED}")
+MESSAGE(STATUS "[AssetImporter] The following formats will be included: ${ASSIMP_IMPORTERS_ENABLED}")
 
 SET( assimp_src
   # Assimp Files
@@ -763,11 +707,6 @@ INCLUDE_DIRECTORIES(
     ../contrib/openddlparser/include
 )
 
-IF (ASSIMP_BUILD_NONFREE_C4D_IMPORTER)
-  SET( assimp_src ${assimp_src} ${C4D_SRCS})
-  INCLUDE_DIRECTORIES(${C4D_INCLUDES})
-ENDIF (ASSIMP_BUILD_NONFREE_C4D_IMPORTER)
-
 # Urho3D - commented out targets defined by the original CMakeLists.txt and use our own macro instead
 
 # Define target name
@@ -785,12 +724,6 @@ list (APPEND TARGET_PROPERTIES XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH YES)
 
 # Setup target
 setup_library ()
-
-IF (ASSIMP_BUILD_NONFREE_C4D_IMPORTER)
-  TARGET_LINK_LIBRARIES(Assimp optimized ${C4D_RELEASE_LIBRARIES})
-  TARGET_LINK_LIBRARIES(Assimp debug ${C4D_DEBUG_LIBRARIES})
-  TARGET_LINK_LIBRARIES(Assimp ${C4D_EXTRA_LIBRARIES})
-ENDIF (ASSIMP_BUILD_NONFREE_C4D_IMPORTER)
 
 # Add RT-extension library for glTF importer with Open3DGC-compression.
 IF (RT_FOUND AND ASSIMP_IMPORTER_GLTF_USE_OPEN3DGC)
