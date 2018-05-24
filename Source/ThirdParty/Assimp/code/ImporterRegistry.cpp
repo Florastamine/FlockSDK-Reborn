@@ -62,9 +62,6 @@ corresponding preprocessor flag to selectively disable formats.
 #ifndef ASSIMP_BUILD_NO_3DS_IMPORTER
 #   include "3DSLoader.h"
 #endif
-#ifndef ASSIMP_BUILD_NO_ASE_IMPORTER
-#   include "ASELoader.h"
-#endif
 #ifndef ASSIMP_BUILD_NO_OBJ_IMPORTER
 #   include "ObjFileImporter.h"
 #endif
@@ -86,29 +83,14 @@ corresponding preprocessor flag to selectively disable formats.
 #ifndef ASSIMP_BUILD_NO_RAW_IMPORTER
 #   include "RawLoader.h"
 #endif
-#ifndef ASSIMP_BUILD_NO_SIB_IMPORTER
-#   include "SIBImporter.h"
-#endif
-#ifndef ASSIMP_BUILD_NO_AC_IMPORTER
-#   include "ACLoader.h"
-#endif
 #ifndef ASSIMP_BUILD_NO_BVH_IMPORTER
 #   include "BVHLoader.h"
 #endif
 #ifndef ASSIMP_BUILD_NO_COLLADA_IMPORTER
 #   include "ColladaLoader.h"
 #endif
-#ifndef ASSIMP_BUILD_NO_LWS_IMPORTER
-#   include "LWSLoader.h"
-#endif
-#ifndef ASSIMP_BUILD_NO_OGRE_IMPORTER
-#   include "OgreImporter.h"
-#endif
 #ifndef ASSIMP_BUILD_NO_OPENGEX_IMPORTER
 #   include "OpenGEXImporter.h"
-#endif
-#ifndef ASSIMP_BUILD_NO_BLEND_IMPORTER
-#   include "BlenderLoader.h"
 #endif
 #ifndef ASSIMP_BUILD_NO_FBX_IMPORTER
 #   include "FBXImporter.h"
@@ -130,7 +112,7 @@ void GetImporterInstanceList(std::vector< BaseImporter* >& out)
     // Add an instance of each worker class here
     // (register_new_importers_here)
     // ----------------------------------------------------------------------------
-    out.reserve(64);
+    out.reserve(24);
 #if (!defined ASSIMP_BUILD_NO_X_IMPORTER)
     out.push_back( new XFileImporter());
 #endif
@@ -139,11 +121,6 @@ void GetImporterInstanceList(std::vector< BaseImporter* >& out)
 #endif
 #if (!defined ASSIMP_BUILD_NO_3DS_IMPORTER)
     out.push_back( new Discreet3DSImporter());
-#endif
-#if (!defined ASSIMP_BUILD_NO_ASE_IMPORTER)
-  #if (!defined ASSIMP_BUILD_NO_3DS_IMPORTER)
-    out.push_back( new ASEImporter());
-#  endif    
 #endif
 #if (!defined ASSIMP_BUILD_NO_SMD_IMPORTER)
     out.push_back( new SMDImporter());
@@ -163,29 +140,14 @@ void GetImporterInstanceList(std::vector< BaseImporter* >& out)
 #if (!defined ASSIMP_BUILD_NO_RAW_IMPORTER)
     out.push_back( new RAWImporter());
 #endif
-#if (!defined ASSIMP_BUILD_NO_SIB_IMPORTER)
-    out.push_back( new SIBImporter());
-#endif
-#if (!defined ASSIMP_BUILD_NO_AC_IMPORTER)
-    out.push_back( new AC3DImporter());
-#endif
 #if (!defined ASSIMP_BUILD_NO_BVH_IMPORTER)
     out.push_back( new BVHLoader());
 #endif
 #if (!defined ASSIMP_BUILD_NO_COLLADA_IMPORTER)
     out.push_back( new ColladaLoader());
 #endif
-#if (!defined ASSIMP_BUILD_NO_LWS_IMPORTER)
-    out.push_back( new LWSImporter());
-#endif
-#if (!defined ASSIMP_BUILD_NO_OGRE_IMPORTER)
-    out.push_back( new Ogre::OgreImporter());
-#endif
 #if (!defined ASSIMP_BUILD_NO_OPENGEX_IMPORTER )
     out.push_back( new OpenGEX::OpenGEXImporter() );
-#endif
-#if (!defined ASSIMP_BUILD_NO_BLEND_IMPORTER)
-    out.push_back( new BlenderImporter());
 #endif
 #if ( !defined ASSIMP_BUILD_NO_FBX_IMPORTER )
     out.push_back( new FBXImporter() );

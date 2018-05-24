@@ -221,18 +221,6 @@ ADD_ASSIMP_IMPORTER( 3DS
   3DSExporter.cpp
 )
 
-ADD_ASSIMP_IMPORTER( AC
-  ACLoader.cpp
-  ACLoader.h
-)
-
-ADD_ASSIMP_IMPORTER( ASE
-  ASELoader.cpp
-  ASELoader.h
-  ASEParser.cpp
-  ASEParser.h
-)
-
 ADD_ASSIMP_IMPORTER( ASSBIN
   AssbinExporter.h
   AssbinExporter.cpp
@@ -277,11 +265,6 @@ ADD_ASSIMP_IMPORTER( LWO
   LWOMaterial.cpp
 )
 
-ADD_ASSIMP_IMPORTER( LWS
-  LWSLoader.cpp
-  LWSLoader.h
-)
-
 ADD_ASSIMP_IMPORTER( MD5
   MD5Loader.cpp
   MD5Loader.h
@@ -308,43 +291,12 @@ ADD_ASSIMP_IMPORTER( OBJ
   ObjExporter.cpp
 )
 
-ADD_ASSIMP_IMPORTER( OGRE
-  OgreImporter.h
-  OgreStructs.h
-  OgreParsingUtils.h
-  OgreBinarySerializer.h
-  OgreXmlSerializer.h
-  OgreImporter.cpp
-  OgreStructs.cpp
-  OgreBinarySerializer.cpp
-  OgreXmlSerializer.cpp
-  OgreMaterial.cpp
-)
-
 ADD_ASSIMP_IMPORTER( OPENGEX
   OpenGEXExporter.cpp
   OpenGEXExporter.h
   OpenGEXImporter.cpp
   OpenGEXImporter.h
   OpenGEXStructs.h
-)
-
-ADD_ASSIMP_IMPORTER( BLEND
-  BlenderLoader.cpp
-  BlenderLoader.h
-  BlenderDNA.cpp
-  BlenderDNA.h
-  BlenderDNA.inl
-  BlenderScene.cpp
-  BlenderScene.h
-  BlenderSceneGen.h
-  BlenderIntermediate.h
-  BlenderModifier.h
-  BlenderModifier.cpp
-  BlenderBMesh.h
-  BlenderBMesh.cpp
-  BlenderTessellator.h
-  BlenderTessellator.cpp
 )
 
 ADD_ASSIMP_IMPORTER( FBX
@@ -436,11 +388,6 @@ SOURCE_GROUP( IrrXML FILES ${IrrXML_SRCS})
 ADD_ASSIMP_IMPORTER( RAW
   RawLoader.cpp
   RawLoader.h
-)
-
-ADD_ASSIMP_IMPORTER( SIB
-  SIBImporter.cpp
-  SIBImporter.h
 )
 
 ADD_ASSIMP_IMPORTER( SMD
